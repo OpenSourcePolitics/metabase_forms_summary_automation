@@ -10,7 +10,7 @@ This project aims to make a summary of a Decidim Form, based on models available
 3. Run `poetry run make_summary`
 
 ## TODO
-- [ ] Connect to Metabase
+- [x] Connect to Metabase
 - [ ] Retrieve all forms of specified customer
 - [ ] Retrieve all questions of specified form with their types and IDs
 - [ ] Create card that gathers answers of the specified question
