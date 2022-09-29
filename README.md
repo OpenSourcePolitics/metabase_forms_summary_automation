@@ -11,7 +11,7 @@ This project aims to make a summary of a Decidim Form, based on models available
 
 ## TODO
 - [x] Connect to Metabase
-- [ ] Retrieve all forms of specified customer
+- [x] Retrieve all forms with provided model ID
 - [ ] Retrieve all questions of specified form with their types and IDs
 - [ ] Create card that gathers answers of the specified question
     - [ ] Short answers
