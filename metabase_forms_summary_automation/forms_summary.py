@@ -4,10 +4,12 @@ from .card_creation import (
     Filter,
     Aggregation,
     Fields,
+    Order,
     ChartCreator,
     PieChart,
     TableChart,
-    BarChart
+    BarChart,
+    HorizontalBarChart
 )
 from pprint import pprint
 
@@ -79,7 +81,7 @@ class FormsSummary:
                 pie_chart.set_filter(Filter('=','question_title', question_title))
                 pie_chart.set_aggregation(
                     Aggregation(
-                        'count',
+                        ['count'],
                         Fields([{'name':'answer', 'type': 'type/Text'}])
                     )
                 )
@@ -89,7 +91,7 @@ class FormsSummary:
                 bar_chart.set_filter(Filter('=', 'question_title', question_title))
                 bar_chart.set_aggregation(
                     Aggregation(
-                        'count',
+                        ['count'],
                         Fields(
                             [
                                 {'name':'sub_matrix_question', 'type':'type/Text'},
@@ -123,4 +125,19 @@ class FormsSummary:
             
                 table_chart.create_chart()                
             elif question_type in ["sorting"]:
-                pass
+                horizontal_bar_chart = HorizontalBarChart(
+                    question_title, self
+                )
+                horizontal_bar_chart.set_filter(Filter('=', 'question_title', question_title))
+                horizontal_bar_chart.set_aggregation(
+                    Aggregation(
+                        ['sum', Fields([{'name':'sorting_points', 'type': 'type/Integer'}])],
+                        Fields([{'name':'answer', 'type': 'type/Text'}])
+                    )
+                )
+                horizontal_bar_chart.set_order(Order('desc'))
+                import pdb; pdb.set_trace()
+                horizontal_bar_chart.create_chart()
+                
+                
+                
