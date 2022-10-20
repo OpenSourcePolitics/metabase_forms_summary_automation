@@ -4,16 +4,28 @@ class Filter:
         self.field= field
         self.value = value
         
+    def to_params(self):
+        pass
 
 class Aggregation:
     def __init__(self, aggregation_type, field):
         self.type = aggregation_type
         self.field = field
 
+    def to_params(self):
+        pass
 
 class Fields:
     def __init__(self, field_list):
         self.field_list = field_list
+        
+    def to_params(self):
+        params = []
+        for field in self.field_list:
+            params.append([
+                "field",field["name"], { "base-type": field["type"]}
+            ])
+        return params
 
 class ChartCreator:
     def __init__(self, display, name, forms_summary, **kwargs):
@@ -32,7 +44,8 @@ class ChartCreator:
                 }
             }
         self.filter = None
-        self.aggregation = None        
+        self.aggregation = None
+        self.fields = None
             
     def create_chart(self):
         if self.filter:
@@ -51,6 +64,9 @@ class ChartCreator:
             self.params['dataset_query']['query']['breakout'] = [[
                 "field", self.aggregation.field, { "base-type": "type/Text" }
             ]]
+            
+        if self.fields:
+            self.params['dataset_query']['query']['fields'] = self.fields.to_params()
 
         self.mtb.create_card(custom_json=self.params)
 
@@ -61,13 +77,16 @@ class ChartCreator:
     def set_aggregation(self, aggregation):
         assert isinstance(aggregation, Aggregation)
         self.aggregation = aggregation
-
+        
+    def set_fields(self, fields):
+        assert isinstance(fields, Fields)
+        self.fields = fields
 
 class PieChart(ChartCreator):
     def __init__(self, *args, **kwargs):
         super().__init__('pie',*args,**kwargs)
 
 
-class Histogram(ChartCreator):
+class TableChart(ChartCreator):
     def __init__(self, *args, **kwargs):
-        super().__init__('histogram', *args, **kwargs)
+        super().__init__('table', *args, **kwargs)

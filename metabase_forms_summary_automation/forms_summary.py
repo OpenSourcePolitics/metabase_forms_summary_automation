@@ -1,6 +1,13 @@
 from metabase_api import Metabase_API
 from metabase_forms_summary_automation import credentials
-from .card_creation import Filter, Aggregation, ChartCreator, PieChart
+from .card_creation import (
+    Filter,
+    Aggregation,
+    Fields,
+    ChartCreator,
+    PieChart,
+    TableChart,
+)
 from pprint import pprint
 
 #print (mtb.get("/api/collection/")[0].keys())
@@ -61,7 +68,11 @@ class FormsSummary:
         for question in self.questions_parameters:
             question_title, question_type = question
             if question_type in ["short_answer", "long_answer"]:
-                pass
+                table_chart = TableChart(question_title, self)
+                table_chart.set_filter(Filter('=', 'question_title', question_title))
+                table_chart.set_fields(Fields([{'name':'answer', 'type': 'type/Text'}]))
+            
+                table_chart.create_chart()
             elif question_type in ["single_option", "multiple_option"]:
                 pie_chart = PieChart(question_title, self)
                 pie_chart.set_filter(Filter('=','question_title', question_title))
