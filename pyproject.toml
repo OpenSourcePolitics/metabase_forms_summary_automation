@@ -9,7 +9,10 @@ packages = [{include = "metabase_forms_summary_automation"}]
 [tool.poetry.dependencies]
 python = "^3.8"
 metabase-api = "^0.2.15"
+pandas = "^1.5.1"
 
+[tool.poetry.scripts]
+start = "metabase_forms_summary_automation.main:start"
 
 [build-system]
 requires = ["poetry-core"]

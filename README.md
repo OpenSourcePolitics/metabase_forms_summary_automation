@@ -12,13 +12,17 @@ This project aims to make a summary of a Decidim Form, based on models available
 ## TODO
 - [x] Connect to Metabase
 - [x] Retrieve all forms with provided model ID
+- [x] Retrieve specific form information
 - [ ] Retrieve all questions of specified form with their types and IDs
 - [ ] Create card that gathers answers of the specified question
     - [ ] Short answers
     - [ ] Long answers
-    - [ ] Single option
-    - [ ] Multiple option
+    - [x] Single option
+    - [x] Multiple option
     - [ ] Sorting
     - [ ] Matrix simple
     - [ ] Matrix multiple
     - [ ] Files
+
+### Improvements
+- [ ] Retrieve automatically the models which contains the forms information
