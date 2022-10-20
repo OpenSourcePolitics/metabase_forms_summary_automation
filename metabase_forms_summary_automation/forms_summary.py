@@ -7,6 +7,7 @@ from .card_creation import (
     ChartCreator,
     PieChart,
     TableChart,
+    BarChart
 )
 from pprint import pprint
 
@@ -76,10 +77,38 @@ class FormsSummary:
             elif question_type in ["single_option", "multiple_option"]:
                 pie_chart = PieChart(question_title, self)
                 pie_chart.set_filter(Filter('=','question_title', question_title))
-                pie_chart.set_aggregation(Aggregation('count','answer'))
+                pie_chart.set_aggregation(
+                    Aggregation(
+                        'count',
+                        Fields([{'name':'answer', 'type': 'type/Text'}])
+                    )
+                )
                 pie_chart.create_chart()
             elif question_type in ["matrix_single", "matrix_multiple"]:
-                pass
+                bar_chart = BarChart(question_title, self)
+                bar_chart.set_filter(Filter('=', 'question_title', question_title))
+                bar_chart.set_aggregation(
+                    Aggregation(
+                        'count',
+                        Fields(
+                            [
+                                {'name':'sub_matrix_question', 'type':'type/Text'},
+                                {'name':'answer', 'type': 'type/Text'}
+                            ]
+                        )
+                    )
+                )
+                bar_chart.set_custom_params(
+                    [{
+                        "name": "visualization_settings",
+                        "value": {
+                            "graph.dimensions": ["sub_matrix_question", "answer"],
+                            "graph.metrics": ["count"]
+                        }
+                    }]
+                )
+                
+                bar_chart.create_chart()
             elif question_type in ["files"]:
                 pass
             elif question_type in ["sorting"]:

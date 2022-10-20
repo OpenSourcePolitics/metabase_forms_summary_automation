@@ -8,12 +8,15 @@ class Filter:
         pass
 
 class Aggregation:
-    def __init__(self, aggregation_type, field):
+    def __init__(self, aggregation_type, fields):
         self.type = aggregation_type
-        self.field = field
+        self.fields = fields
 
     def to_params(self):
-        pass
+        params = []
+        aggregation = [[self.type]]
+        breakout = self.fields.to_params()
+        return aggregation, breakout
 
 class Fields:
     def __init__(self, field_list):
@@ -46,6 +49,7 @@ class ChartCreator:
         self.filter = None
         self.aggregation = None
         self.fields = None
+        self.custom_params = None
             
     def create_chart(self):
         if self.filter:
@@ -60,14 +64,16 @@ class ChartCreator:
             ]
         
         if self.aggregation:
-            self.params['dataset_query']['query']['aggregation'] = [[self.aggregation.type]]
-            self.params['dataset_query']['query']['breakout'] = [[
-                "field", self.aggregation.field, { "base-type": "type/Text" }
-            ]]
+            aggregation, breakout = self.aggregation.to_params()
+            self.params['dataset_query']['query']['aggregation'] = aggregation
+            self.params['dataset_query']['query']['breakout'] = breakout
             
         if self.fields:
             self.params['dataset_query']['query']['fields'] = self.fields.to_params()
 
+        if self.custom_params:
+            for custom_param in self.custom_params:
+                self.params[custom_param["name"]] = custom_param["value"]
         self.mtb.create_card(custom_json=self.params)
 
     def set_filter(self, filter):
@@ -82,6 +88,8 @@ class ChartCreator:
         assert isinstance(fields, Fields)
         self.fields = fields
 
+    def set_custom_params(self, kwargs_list):
+        self.custom_params = kwargs_list
 class PieChart(ChartCreator):
     def __init__(self, *args, **kwargs):
         super().__init__('pie',*args,**kwargs)
@@ -90,3 +98,8 @@ class PieChart(ChartCreator):
 class TableChart(ChartCreator):
     def __init__(self, *args, **kwargs):
         super().__init__('table', *args, **kwargs)
+
+
+class BarChart(ChartCreator):
+    def __init__(self, *args, **kwargs):
+        super().__init__('bar', *args, **kwargs)
