@@ -110,6 +110,17 @@ class FormsSummary:
                 
                 bar_chart.create_chart()
             elif question_type in ["files"]:
-                pass
+                table_chart = TableChart(question_title, self)
+                table_chart.set_filter(Filter('=', 'question_title', question_title))
+                table_chart.set_fields(
+                    Fields(
+                        [
+                            {'name':'answer', 'type': 'type/Text'},
+                            {'name':'custom_body', 'type':'type/*'}
+                        ]
+                    )
+                )
+            
+                table_chart.create_chart()                
             elif question_type in ["sorting"]:
                 pass
