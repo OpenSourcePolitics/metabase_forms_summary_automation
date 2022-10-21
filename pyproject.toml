@@ -12,7 +12,7 @@ metabase-api = "^0.2.15"
 pandas = "^1.5.1"
 
 [tool.poetry.scripts]
-start = "metabase_forms_summary_automation.main:start"
+make_summary = "metabase_forms_summary_automation.main:make_summary"
 
 [build-system]
 requires = ["poetry-core"]

@@ -2,7 +2,7 @@ from metabase_forms_summary_automation.forms_summary import FormsSummary
 from .credentials import FORM_ID, ANSWERS_MODEL_ID
 from .utils import create_dashboard, add_cards_to_dashboard
 
-def start():
+def make_summary():
     demo_form_id = FORM_ID
     answers_model_id = ANSWERS_MODEL_ID
     f = FormsSummary(form_id=demo_form_id)
