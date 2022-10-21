@@ -15,7 +15,7 @@ class Aggregation:
     def to_params(self):
         params = []
         if self.type[0] == 'count':
-            aggregation = [[self.type]]
+            aggregation = [[self.type][0]]
         #TODO : improve aggregation
         elif self.type[0] == 'sum':
             aggregation_type = 'sum'
@@ -61,12 +61,13 @@ class ChartCreator:
                 'name': self.name,
                 'display': self.display,
                 'dataset_query' : {
-                    'database': forms_summary.credentials.DATABASE_ID,
+                    'database': forms_summary.database_id,
                     'query': {
                         'source-table': f'card__{forms_summary.form_model_id}'
                     },
                     'type': 'query'
-                }
+                },
+                'collection_id': forms_summary.credentials.COLLECTION_ID
             }
         self.filter = None
         self.aggregation = None
@@ -101,7 +102,8 @@ class ChartCreator:
         if self.order:
             self.params['dataset_query']['query']['order_by'] = self.order.to_params()
         
-        self.mtb.create_card(custom_json=self.params)
+        chart = self.mtb.create_card(custom_json=self.params, return_card=True)
+        return chart
 
     def set_filter(self, filter):
         assert isinstance(filter, Filter)

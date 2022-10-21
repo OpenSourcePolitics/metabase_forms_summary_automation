@@ -16,12 +16,18 @@ from pprint import pprint
 #print (mtb.get("/api/collection/")[0].keys())
 
 class FormsSummary:
-    def __init__(self, form_id, questions=None, dashboard_id=None):
+    def __init__(self, form_id):
         self.connect(credentials)
         self.form_id = form_id
-        self.questions = questions
-        self.dashboard_id = dashboard_id
         self.credentials = credentials
+        
+        self.get_database_id()
+        self.collection_id = credentials.COLLECTION_ID
+        self.create_form_model(credentials.ANSWERS_MODEL_ID, name="MODÈLE - Questionnaire open-data")
+        self.get_questions_parameters()
+    
+    def get_database_id(self):
+        self.database_id = self.mtb.get_item_info('card', credentials.ANSWERS_MODEL_ID)["database_id"]
         
     def connect(self, credentials):
         self.mtb = Metabase_API(
@@ -30,13 +36,14 @@ class FormsSummary:
             credentials.METABASE_PASSWORD
         )
 
-    def create_form_model(self, answers_model_id, form_name="MODEL - My wonderful form"):
+    # TODO : move to table chart with dataset = True
+    def create_form_model(self, answers_model_id, name="MODEL - My wonderful form"):
         params = {
-            'name': form_name,
+            'name': name,
             'display': 'table',
             'dataset': True,
             'dataset_query': {
-                'database': credentials.DATABASE_ID,
+                'database': self.database_id,
                 'query': 
                     {'filter': 
                         [
@@ -55,6 +62,7 @@ class FormsSummary:
         }
        
         res = self.mtb.create_card(custom_json=params, return_card=True)
+        self.form_model_info = res
         self.form_model_id = res['id']
 
     def get_questions_parameters(self):
@@ -68,28 +76,28 @@ class FormsSummary:
         self.questions_parameters = df.values.tolist()
         
     def create_question_summary(self):
+        chart_list = []
         for question in self.questions_parameters:
             question_title, question_type = question
+            chart = None
             if question_type in ["short_answer", "long_answer"]:
-                table_chart = TableChart(question_title, self)
-                table_chart.set_filter(Filter('=', 'question_title', question_title))
-                table_chart.set_fields(Fields([{'name':'answer', 'type': 'type/Text'}]))
-            
-                table_chart.create_chart()
+                chart = TableChart(question_title, self)
+                chart.set_filter(Filter('=', 'question_title', question_title))
+                chart.set_fields(Fields([{'name':'answer', 'type': 'type/Text'}]))
+
             elif question_type in ["single_option", "multiple_option"]:
-                pie_chart = PieChart(question_title, self)
-                pie_chart.set_filter(Filter('=','question_title', question_title))
-                pie_chart.set_aggregation(
+                chart = PieChart(question_title, self)
+                chart.set_filter(Filter('=','question_title', question_title))
+                chart.set_aggregation(
                     Aggregation(
                         ['count'],
                         Fields([{'name':'answer', 'type': 'type/Text'}])
                     )
                 )
-                pie_chart.create_chart()
             elif question_type in ["matrix_single", "matrix_multiple"]:
-                bar_chart = BarChart(question_title, self)
-                bar_chart.set_filter(Filter('=', 'question_title', question_title))
-                bar_chart.set_aggregation(
+                chart = BarChart(question_title, self)
+                chart.set_filter(Filter('=', 'question_title', question_title))
+                chart.set_aggregation(
                     Aggregation(
                         ['count'],
                         Fields(
@@ -100,7 +108,7 @@ class FormsSummary:
                         )
                     )
                 )
-                bar_chart.set_custom_params(
+                chart.set_custom_params(
                     [{
                         "name": "visualization_settings",
                         "value": {
@@ -109,12 +117,10 @@ class FormsSummary:
                         }
                     }]
                 )
-                
-                bar_chart.create_chart()
             elif question_type in ["files"]:
-                table_chart = TableChart(question_title, self)
-                table_chart.set_filter(Filter('=', 'question_title', question_title))
-                table_chart.set_fields(
+                chart = TableChart(question_title, self)
+                chart.set_filter(Filter('=', 'question_title', question_title))
+                chart.set_fields(
                     Fields(
                         [
                             {'name':'answer', 'type': 'type/Text'},
@@ -122,22 +128,19 @@ class FormsSummary:
                         ]
                     )
                 )
-            
-                table_chart.create_chart()                
             elif question_type in ["sorting"]:
-                horizontal_bar_chart = HorizontalBarChart(
+                chart = HorizontalBarChart(
                     question_title, self
                 )
-                horizontal_bar_chart.set_filter(Filter('=', 'question_title', question_title))
-                horizontal_bar_chart.set_aggregation(
+                chart.set_filter(Filter('=', 'question_title', question_title))
+                chart.set_aggregation(
                     Aggregation(
                         ['sum', Fields([{'name':'sorting_points', 'type': 'type/Integer'}])],
                         Fields([{'name':'answer', 'type': 'type/Text'}])
                     )
                 )
-                horizontal_bar_chart.set_order(Order('desc'))
-                import pdb; pdb.set_trace()
-                horizontal_bar_chart.create_chart()
-                
-                
-                
+                chart.set_order(Order('desc'))
+            created_chart = chart.create_chart()
+            chart_list.append(created_chart)
+        return chart_list
+            
