@@ -10,7 +10,6 @@ def create_dashboard(mtb, name, collection_id):
     return res
 
 def add_cards_to_dashboard(mtb, dashboard, chart_list):
-    import pdb; pdb.set_trace()
     dashboard_id = dashboard["id"]
     for chart in chart_list:
         chart_id = chart["id"]
