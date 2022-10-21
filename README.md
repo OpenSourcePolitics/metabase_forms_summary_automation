@@ -3,6 +3,12 @@ This project aims to make a summary of a Decidim Form, based on models available
 
 ## Requirements
 - [Poetry](https://python-poetry.org/)
+- Having setup the answers' request using the SQL request available on the [decidim_cards repo]()
+- Fill the `credentials.py` with :
+    - Metabase credentials
+    - ID of the base request
+    - ID of the Decidim form
+    - ID of the collection in which you want to have the created charts and dashboard
 
 ## Setup
 1. Clone repository
@@ -13,16 +19,19 @@ This project aims to make a summary of a Decidim Form, based on models available
 - [x] Connect to Metabase
 - [x] Retrieve all forms with provided model ID
 - [x] Retrieve specific form information
-- [ ] Retrieve all questions of specified form with their types and IDs
-- [ ] Create card that gathers answers of the specified question
-    - [ ] Short answers
-    - [ ] Long answers
+- [x] Retrieve all questions of specified form with their types and IDs
+- [x] Create card that gathers answers of the specified question
+    - [x] Short answers
+    - [x] Long answers
     - [x] Single option
     - [x] Multiple option
-    - [ ] Sorting
-    - [ ] Matrix simple
-    - [ ] Matrix multiple
-    - [ ] Files
+    - [x] Sorting (cumulative points)
+    - [x] Matrix simple
+    - [x] Matrix multiple
+    - [x] Files
 
 ### Improvements
 - [ ] Retrieve automatically the models which contains the forms information
+- [ ] Interactive creation that displays the question title and type to give choice of visualization
+- [ ] Test cover
+- [ ] Give possibility to hide/show labels
