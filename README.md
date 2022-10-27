@@ -1,5 +1,5 @@
 # Metabase Forms Summary Automation
-This project aims to make a summary of a Decidim Form, based on models available on [this project](https://github.com/OpenSourcePolitics/metabase_automation/)
+This project aims to make a summary of a Decidim Form, based on models available on [this project](https://github.com/OpenSourcePolitics/metabase_automation/) and the [Metabase_API_python wrapper](https://github.com/vvaezian/metabase_api_python.git)
 
 ## Requirements
 - [Poetry](https://python-poetry.org/)
