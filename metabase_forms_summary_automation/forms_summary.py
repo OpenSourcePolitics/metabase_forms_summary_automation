@@ -1,5 +1,4 @@
 from metabase_api import Metabase_API
-from metabase_forms_summary_automation import credentials
 from .card_creation import (
     Filter,
     Aggregation,
@@ -16,10 +15,10 @@ from pprint import pprint
 #print (mtb.get("/api/collection/")[0].keys())
 
 class FormsSummary:
-    def __init__(self, form_id):
-        self.connect(credentials)
-        self.form_id = form_id
+    def __init__(self, form_id, credentials):
         self.credentials = credentials
+        self.connect()
+        self.form_id = form_id
         
         self.get_database_id()
         self.collection_id = credentials.COLLECTION_ID
@@ -27,13 +26,13 @@ class FormsSummary:
         self.get_questions_parameters()
     
     def get_database_id(self):
-        self.database_id = self.mtb.get_item_info('card', credentials.ANSWERS_MODEL_ID)["database_id"]
+        self.database_id = self.mtb.get_item_info('card', self.credentials.ANSWERS_MODEL_ID)["database_id"]
         
-    def connect(self, credentials):
+    def connect(self):
         self.mtb = Metabase_API(
-            credentials.METABASE_URL,
-            credentials.METABASE_USERNAME,
-            credentials.METABASE_PASSWORD
+            self.credentials.METABASE_URL,
+            self.credentials.METABASE_USERNAME,
+            self.credentials.METABASE_PASSWORD
         )
 
     # TODO : move to table chart with dataset = True

@@ -25,6 +25,7 @@ class Aggregation:
         breakout = self.fields.to_params()
         return aggregation, breakout
 
+
 class Fields:
     def __init__(self, field_list):
         self.field_list = field_list
@@ -51,6 +52,7 @@ class Order:
             ["aggregation", 0, None]
         ])
         return params
+
 
 class ChartCreator:
     def __init__(self, display, name, forms_summary, **kwargs):

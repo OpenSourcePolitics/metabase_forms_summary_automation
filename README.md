@@ -33,5 +33,5 @@ This project aims to make a summary of a Decidim Form, based on models available
 ### Improvements
 - [ ] Retrieve automatically the models which contains the forms information
 - [ ] Interactive creation that displays the question title and type to give choice of visualization
-- [ ] Test cover
+- [ ] Test cover : red, green, blue
 - [ ] Give possibility to hide/show labels
