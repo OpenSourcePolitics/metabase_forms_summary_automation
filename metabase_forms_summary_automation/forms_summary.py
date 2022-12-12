@@ -22,7 +22,7 @@ class FormsSummary:
         
         self.get_database_id()
         self.collection_id = credentials.COLLECTION_ID
-        self.create_form_model(credentials.ANSWERS_MODEL_ID, name="MODÈLE - Questionnaire open-data")
+        self.create_form_model(credentials.ANSWERS_MODEL_ID, name=credentials.FORM_NAME)
         self.get_questions_parameters()
     
     def get_database_id(self):

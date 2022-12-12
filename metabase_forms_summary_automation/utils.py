@@ -2,7 +2,7 @@ def create_dashboard(mtb, name, collection_id):
     res = mtb.post(
         "/api/dashboard",
         json={
-            'name': name,
+            'name': f"Tableau de bord - {name}",
             'collection_id': collection_id
         }
     )
