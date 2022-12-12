@@ -32,6 +32,10 @@ This project aims to make a summary of a Decidim Form, based on models available
 
 ### Improvements
 - [ ] Retrieve automatically the models which contains the forms information
+- [ ] Resize box of report dashboardcards to fill all width and a pre-determined height.
 - [ ] Interactive creation that displays the question title and type to give choice of visualization
 - [ ] Test cover : red, green, blue
 - [ ] Give possibility to hide/show labels
+- [ ] Pin created dashboard
+- [ ] Message the consultant concerned by the form summary
+- [ ] Add a descriptive message for the 
