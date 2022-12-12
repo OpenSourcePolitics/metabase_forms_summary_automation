@@ -38,4 +38,4 @@ This project aims to make a summary of a Decidim Form, based on models available
 - [ ] Give possibility to hide/show labels
 - [ ] Pin created dashboard
 - [ ] Message the consultant concerned by the form summary
-- [ ] Add a descriptive message for the 
+- [ ] Order answers by number of occurences
