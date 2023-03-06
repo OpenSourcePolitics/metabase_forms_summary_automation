@@ -84,6 +84,7 @@ class FormsSummary:
             if question_type in ["short_answer", "long_answer"]:
                 chart = TableChart(question_name, self)
                 chart.set_filters(chart_filter)
+                chart.set_filters(Filter('!=', 'answer', 'Pas de réponse'))
                 chart.set_fields(Fields([{'name':'answer', 'type': 'type/Text'}]))
 
             elif question_type in ["single_option", "multiple_option"]:
