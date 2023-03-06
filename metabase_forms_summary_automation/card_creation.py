@@ -26,7 +26,7 @@ class Aggregation:
         params = []
         if self.type[0] == 'count':
             aggregation = [[self.type][0]]
-        #TODO : improve aggregation
+        # TODO : improve aggregation
         elif self.type[0] == 'sum':
             aggregation_type = 'sum'
             aggregation_field = self.type[1]
@@ -64,7 +64,7 @@ class Order:
         return params
 
 
-class ChartCreator:
+class Chart:
     def __init__(self, display, name, forms_summary, **kwargs):
         self.display = display
         self.name = name
@@ -81,15 +81,22 @@ class ChartCreator:
                 },
                 'collection_id': forms_summary.credentials.COLLECTION_ID
             }
-        self.filter = None
+        self.filters = []
         self.aggregation = None
         self.fields = None
         self.order = None
         self.custom_params = None
             
     def create_chart(self):
-        if self.filter:
-            self.params['dataset_query']['query']['filter'] = self.filter.to_params()
+        filter_params = None
+        if self.filters:
+            if len(self.filters) == 1:
+                filter_params = self.filters[0].to_params()
+            else:
+                filter_params = ['and']
+                for filter in self.filters:
+                    filter_params.append(filter.to_params())
+            self.params['dataset_query']['query']['filter'] = filter_params
         
         if self.aggregation:
             aggregation, breakout = self.aggregation.to_params()
@@ -109,9 +116,9 @@ class ChartCreator:
         chart = self.mtb.create_card(custom_json=self.params, return_card=True)
         return chart
 
-    def set_filter(self, filter):
+    def set_filters(self, filter):
         assert isinstance(filter, Filter)
-        self.filter = filter
+        self.filters.append(filter)
         
     def set_aggregation(self, aggregation):
         assert isinstance(aggregation, Aggregation)
@@ -127,21 +134,23 @@ class ChartCreator:
 
     def set_custom_params(self, kwargs_list):
         self.custom_params = kwargs_list
-class PieChart(ChartCreator):
+
+
+class PieChart(Chart):
     def __init__(self, *args, **kwargs):
         super().__init__('pie',*args,**kwargs)
 
 
-class TableChart(ChartCreator):
+class TableChart(Chart):
     def __init__(self, *args, **kwargs):
         super().__init__('table', *args, **kwargs)
 
 
-class BarChart(ChartCreator):
+class BarChart(Chart):
     def __init__(self, *args, **kwargs):
         super().__init__('bar', *args, **kwargs)
 
 
-class HorizontalBarChart(ChartCreator):
+class HorizontalBarChart(Chart):
     def __init__(self, *args, **kwargs):
         super().__init__('row',*args, **kwargs)
