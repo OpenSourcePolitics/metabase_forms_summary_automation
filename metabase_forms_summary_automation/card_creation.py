@@ -1,11 +1,21 @@
 class Filter:
-    def __init__(self, filter_type, field, value):
+    def __init__(self, filter_type, field, value, field_type='type/Text'):
         self.type = filter_type
         self.field= field
         self.value = value
+        self.field_type = field_type
         
     def to_params(self):
-        pass
+        return [
+            self.type,
+            [      
+                'field',     
+                self.field,
+                {'base-type': self.field_type}
+            ],
+            self.value
+        ]
+
 
 class Aggregation:
     def __init__(self, aggregation_type, fields):
@@ -79,15 +89,7 @@ class ChartCreator:
             
     def create_chart(self):
         if self.filter:
-            self.params['dataset_query']['query']['filter'] = [
-                self.filter.type,
-                [      
-                    'field',     
-                    self.filter.field,
-                    {'base-type': 'type/Text'}
-                ],
-                self.filter.value
-            ]
+            self.params['dataset_query']['query']['filter'] = self.filter.to_params()
         
         if self.aggregation:
             aggregation, breakout = self.aggregation.to_params()

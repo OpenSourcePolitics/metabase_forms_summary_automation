@@ -4,7 +4,6 @@ from metabase_forms_summary_automation import credentials
 
 def make_summary():
     demo_form_id = credentials.FORM_ID
-    answers_model_id = credentials.ANSWERS_MODEL_ID
     form_name = credentials.FORM_NAME
     f = FormsSummary(form_id=demo_form_id, credentials=credentials)
     f.get_questions_parameters()
