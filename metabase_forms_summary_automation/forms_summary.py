@@ -4,7 +4,7 @@ from .card_creation import (
     Aggregation,
     Fields,
     Order,
-    ChartCreator,
+    Chart,
     PieChart,
     TableChart,
     BarChart,
@@ -83,12 +83,12 @@ class FormsSummary:
             question_name = f"{position}. {question_title}"
             if question_type in ["short_answer", "long_answer"]:
                 chart = TableChart(question_name, self)
-                chart.set_filter(chart_filter)
+                chart.set_filters(chart_filter)
                 chart.set_fields(Fields([{'name':'answer', 'type': 'type/Text'}]))
 
             elif question_type in ["single_option", "multiple_option"]:
                 chart = PieChart(question_name, self)
-                chart.set_filter(chart_filter)
+                chart.set_filters(chart_filter)
                 chart.set_aggregation(
                     Aggregation(
                         ['count'],
@@ -97,7 +97,7 @@ class FormsSummary:
                 )
             elif question_type in ["matrix_single", "matrix_multiple"]:
                 chart = BarChart(question_name, self)
-                chart.set_filter(chart_filter)
+                chart.set_filters(chart_filter)
                 chart.set_aggregation(
                     Aggregation(
                         ['count'],
@@ -120,7 +120,7 @@ class FormsSummary:
                 )
             elif question_type in ["files"]:
                 chart = TableChart(question_name, self)
-                chart.set_filter(chart_filter)
+                chart.set_filters(chart_filter)
                 chart.set_fields(
                     Fields(
                         [
@@ -131,7 +131,7 @@ class FormsSummary:
                 )
             elif question_type in ["sorting"]:
                 chart = HorizontalBarChart(question_name, self)
-                chart.set_filter(chart_filter)
+                chart.set_filters(chart_filter)
                 chart.set_aggregation(
                     Aggregation(
                         ['sum', Fields([{'name':'sorting_points', 'type': 'type/Integer'}])],
