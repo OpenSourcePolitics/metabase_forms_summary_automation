@@ -86,6 +86,10 @@ class Chart:
         self.fields = None
         self.order = None
         self.custom_params = None
+        self.row = 0
+        self.col = 0
+        self.size_x = 4
+        self.size_y = 4
             
     def create_chart(self):
         filter_params = None
@@ -139,18 +143,21 @@ class Chart:
 class PieChart(Chart):
     def __init__(self, *args, **kwargs):
         super().__init__('pie',*args,**kwargs)
+        self.size_x = 6
 
 
 class TableChart(Chart):
     def __init__(self, *args, **kwargs):
         super().__init__('table', *args, **kwargs)
-
+        self.size_x = 18
 
 class BarChart(Chart):
     def __init__(self, *args, **kwargs):
         super().__init__('bar', *args, **kwargs)
+        self.size_x = 6
 
 
 class HorizontalBarChart(Chart):
     def __init__(self, *args, **kwargs):
         super().__init__('row',*args, **kwargs)
+        self.size_x = 9

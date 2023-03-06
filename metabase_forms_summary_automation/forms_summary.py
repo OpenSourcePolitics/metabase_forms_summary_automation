@@ -141,7 +141,7 @@ class FormsSummary:
                 )
                 chart.set_order(Order('desc'))
             created_chart = chart.create_chart()
-            chart_list.append(created_chart)
+            chart_list.append([chart,created_chart])
         # else: 
         #     print(f"Ce type de diagramme n'est pas pris en compte: {question_type}")
         return chart_list

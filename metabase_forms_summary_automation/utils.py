@@ -3,17 +3,23 @@ def create_dashboard(mtb, name, collection_id):
         "/api/dashboard",
         json={
             'name': name,
-            'collection_id': collection_id
+            'collection_id': collection_id,
+            'collection_position':1
         }
     )
     
     return res
 
 def add_cards_to_dashboard(mtb, dashboard, chart_list):
-    dashboard_id = dashboard["id"]
-    for chart in chart_list:
-        chart_id = chart["id"]
-        mtb.post(
-            f"/api/dashboard/{dashboard_id}/cards",
-            json={'cardId':chart_id}
+    for chart, created_chart in chart_list:
+        res = mtb.post(
+            f"/api/dashboard/{dashboard['id']}/cards",
+            json={
+                'cardId':created_chart['id'],
+                'row':chart.row,
+                'col':chart.col,
+                'size_x':chart.size_x,
+                'size_y':chart.size_y
+            }
         )
+        assert res is not False
