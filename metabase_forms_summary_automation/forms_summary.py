@@ -22,7 +22,7 @@ class FormsSummary:
         
         self.get_database_id()
         self.collection_id = credentials.COLLECTION_ID
-        self.create_form_model(credentials.ANSWERS_MODEL_ID, name=credentials.FORM_NAME)
+        self.create_form_model(credentials.ANSWERS_MODEL_ID, name=credentials.FORM_NAME, collection_id=credentials.COLLECTION_ID)
         self.get_questions_parameters()
     
     def connect(self):
@@ -36,7 +36,7 @@ class FormsSummary:
         self.database_id = self.mtb.get_item_info('card', self.credentials.ANSWERS_MODEL_ID)["database_id"]
 
     # TODO : move to table chart with dataset = True
-    def create_form_model(self, answers_model_id, name="MODEL - My wonderful form"):
+    def create_form_model(self, answers_model_id, name="MODEL - My wonderful form", collection_id=0):
         params = {
             'name': name,
             'display': 'table',
@@ -57,7 +57,8 @@ class FormsSummary:
                         'source-table': f'card__{answers_model_id}'
                     },
                 'type': 'query'
-            }
+            },
+            'collection_id': collection_id
         }
        
         res = self.mtb.create_card(custom_json=params, return_card=True)
