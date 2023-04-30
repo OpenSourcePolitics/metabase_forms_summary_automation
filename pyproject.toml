@@ -14,6 +14,9 @@ pandas = "^1.5.1"
 [tool.poetry.scripts]
 make_summary = "metabase_forms_summary_automation.main:make_summary"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
